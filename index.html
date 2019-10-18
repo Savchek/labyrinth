@@ -30,9 +30,17 @@
 			align-items: center;
 			justify-content: space-around;
 			background-color: rgb(69, 69, 199);
-			width: 50px;
-			height: 50px;
+			width: 40px;
+			height: 40px;
 			cursor: pointer;
+		}
+
+		label {
+			user-select: none;
+			cursor: pointer;
+			display: flex;
+			justify-content: center;
+			margin-top: 10px;
 		}
 
 		@media (max-width: 600px) {
@@ -54,8 +62,10 @@
 			<div class="btn" onclick="useBtn('s', 'y')">⬇️</div>
 			<div class="btn" onclick="useBtn('e', 'x')">➡️</div>
 		</div>
+		<label><input id="hardmode" type="checkbox">Hard mode</label>
 	</div>
 	<script>
+		const moode = document.getElementById('hardmode')
 		const displaySize = 600
 
 		// block width
@@ -174,7 +184,8 @@
 			strokeWeight(2)
 			background('#c3dfe3')
 
-			drawLabyrinth()
+			if (!moode.checked)
+				drawLabyrinth()
 
 			//draw aund update score
 			push()
