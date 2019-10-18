@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+	<style>
+		body {
+			display: flex;
+			align-items: center;
+			justify-content: space-around;
+			flex-direction: column-reverse;
+		}
+
+		.btns>div {
+			display: flex;
+			align-items: center;
+			justify-content: space-around;
+			margin: 10px 0;
+			width: 200px;
+			user-select: none;
+		}
+
+		.btn {
+			display: flex;
+			align-items: center;
+			justify-content: space-around;
+			background-color: rgb(69, 69, 199);
+			width: 50px;
+			height: 50px;
+			cursor: pointer;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="btns">
+		<div class="toprow">
+			<div class="btn" onclick="useBtn('n', 'y')">⬆️</div>
+		</div>
+		<div class="botrow">
+			<div class="btn" onclick="useBtn('w', 'x')">⬅️</div>
+			<div class="btn" onclick="useBtn('s', 'y')">⬇️</div>
+			<div class="btn" onclick="useBtn('e', 'x')">➡️</div>
+		</div>
+	</div>
+	<script src="./sketch.js"></script>
+</body>
+
+</html>
