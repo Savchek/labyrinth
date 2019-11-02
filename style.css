@@ -1,0 +1,40 @@
+body {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	flex-direction: column-reverse;
+}
+
+.btns>div {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	margin: 10px 0;
+	width: 200px;
+	user-select: none;
+}
+
+.btn {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	background-color: rgb(69, 69, 199);
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+}
+
+label {
+	user-select: none;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+	.p5Canvas {
+		width: 100% !important;
+		height: auto !important;
+	}
+}
