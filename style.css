@@ -5,6 +5,10 @@ body {
 	flex-direction: column-reverse;
 }
 
+.btns {
+	display: none;
+}
+
 .btns>div {
 	display: flex;
 	align-items: center;
@@ -36,5 +40,11 @@ label {
 	.p5Canvas {
 		width: 100% !important;
 		height: auto !important;
+	}
+}
+
+@media (max-width: 900px) {
+	.btns {
+		display: block;
 	}
 }

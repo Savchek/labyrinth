@@ -1,8 +1,63 @@
+'use strict'
 const moode = document.getElementById('hardmode')
+
+
+
+// P5 STUFF
+new p5()
 const displaySize = 600
 
 // block width
 let bw = 50
+
+let floorTiles = Array(3).fill(0)
+let floorIndexes = []
+
+
+class Entity {
+	constructor(x, y, icon, animation) {
+		this.x = x
+		this.y = y
+		this.icon = loadImage(`./icons/${icon ? icon : 'noicon'}.png`)
+		if (animation) {
+			this.anim = p5Gif.loadGif(`./icons/${animation ? animation : 'noanim'}.gif`)
+			console.log(x * bw + ' ' + y * bw)
+		}
+	}
+	interact(obj) {
+		return this.x == obj.x && this.y == obj.y
+	}
+}
+
+//poison
+class Poison extends Entity {
+	constructor(x, y, multiplier, icon, animation) {
+		super(x, y, icon, animation)
+		// multiplyer 0 means antidote
+		this.m = multiplier
+		this.s = true
+	}
+
+	draw() {
+		image(this.icon, this.x * bw, this.y * bw, bw, bw)
+	}
+
+	update(player) {
+		// if player interacts with poison - apply effect and show message
+		if (player && interact(player)) {
+			// if "m" is 0 - that's antidote
+			// applying effect
+			player.stepPoints = m > 0 ? player.stepPoints + m : 1
+			// showing message
+			message('You\'ve been ' + m > 0
+				? 'poisoned.' + player.stepPoints > 1
+					? ' Again...' : ''
+				: 'cured.')
+		}
+	}
+}
+
+
 
 // player
 let p = {
@@ -81,6 +136,8 @@ let score = 0,
 	tAnim = 0.1,
 	treasures = []
 
+let pois = new Poison(9, 8, 1, 'poison', 'poison')
+
 // labyrinth [hardcoded]
 let lab = [
 	['nw', 'ns', 'ns', 'ns', 'ns', 'ns', 'ns', 'ns', 'ns', 'ns', 'ns', 'ne'],
@@ -98,6 +155,18 @@ let lab = [
 ],
 	vis = [] // visible sides
 
+//const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
+
+function preload() {
+	floorTiles = floorTiles.map((e, i) => loadImage(`./icons/floor${i + 1}.png`))
+
+	let flen = floorTiles.length - 1
+	lab.forEach(e => {
+		let t = []
+		e.forEach(() => t.push(rand(0, flen)))
+		floorIndexes.push(t)
+	})
+}
 
 function setup() {
 	createCanvas(displaySize, displaySize)
@@ -159,19 +228,18 @@ function draw() {
 		e.update()
 	})
 
+	pois.update()
+	pois.draw()
+
 }
 
 function drawLabyrinth() {
+
 	lab.forEach((rowEl, row) => {
 		rowEl.forEach((b, col) => {
 
-			if (row == 0 || row == 11 || col == 0 || col == 11) {
-				push()
-				noStroke()
-				fill('#45c77f')
-				rect(col * bw + 1, row * bw + 1, bw - 2, bw - 2)
-				pop()
-			}
+
+			image(floorTiles[floorIndexes[row][col]], col * bw, row * bw, bw, bw)
 
 			// push()
 			// fill(200)
@@ -188,7 +256,7 @@ function drawLabyrinth() {
 			let x = col * bw,
 				y = row * bw
 
-			checkers = (side, i) => (b[i] == side && vis[row][col].includes(side))
+			const checkers = (side, i) => (b[i] == side && vis[row][col].includes(side))
 
 			for (let i = 0, l = b.length; i < l; i++) {
 
@@ -207,46 +275,47 @@ function drawLabyrinth() {
 				}
 			}
 			//end of for
+
 		})
 	})
 }
 
-useBtn = (side, dir) => {
+// const useBtn = (side, dir) => {
 
-	const gotSide = lab[p.ny] && lab[p.ny][p.nx] && lab[p.ny][p.nx].includes(side)
+// 	const gotSide = lab[p.ny] && lab[p.ny][p.nx] && lab[p.ny][p.nx].includes(side)
 
-	//make side visible
-	if (gotSide && !vis[p.ny][p.nx].includes(side)) {
-		vis[p.ny][p.nx] += side
-		score++
-	}
+// 	//make side visible
+// 	if (gotSide && !vis[p.ny][p.nx].includes(side)) {
+// 		vis[p.ny][p.nx] += side
+// 		score++
+// 	}
 
 
-	if (!gotSide && abs(dir == 'x' ? p.y - p.ny : p.x - p.nx) < p.wg / bw) {
-		let d = dir == 'x' ? 'nx' : 'ny'
-		let s = (side == 'w' || side == 'n') ? -1 : 1
+// 	if (!gotSide && abs(dir == 'x' ? p.y - p.ny : p.x - p.nx) < p.wg / bw) {
+// 		let d = dir == 'x' ? 'nx' : 'ny'
+// 		let s = (side == 'w' || side == 'n') ? -1 : 1
 
-		p[d] = p[d] + s
-		score++
-	}
-}
+// 		p[d] = p[d] + s
+// 		score++
+// 	}
+// }
 
-function keyPressed() {
-	switch (keyCode) {
-		case LEFT_ARROW:
-			useBtn('w', 'x')
-			break
+// function keyPressed() {
+// 	switch (keyCode) {
+// 		case LEFT_ARROW:
+// 			useBtn('w', 'x')
+// 			break
 
-		case RIGHT_ARROW:
-			useBtn('e', 'x')
-			break
+// 		case RIGHT_ARROW:
+// 			useBtn('e', 'x')
+// 			break
 
-		case UP_ARROW:
-			useBtn('n', 'y')
-			break
+// 		case UP_ARROW:
+// 			useBtn('n', 'y')
+// 			break
 
-		case DOWN_ARROW:
-			useBtn('s', 'y')
-			break
-	}
-}
+// 		case DOWN_ARROW:
+// 			useBtn('s', 'y')
+// 			break
+// 	}
+// }
