@@ -8,7 +8,7 @@ class Entity {
 		return this.x == object.x && this.y == object.y
 	}
 	nearby(object, distance) {
-		return abs(this.x - object.x) <= distance && abs(this.y - object.y) <= distance
+		return abs(this.x - ceil(object.x)) <= distance && abs(this.y - ceil(object.y)) <= distance
 	}
 
 	can_see(object) {

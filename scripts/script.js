@@ -20,6 +20,7 @@ let init_items = {
 	],
 	poisons: [
 		new Poison(9, 8, 2),
+		new Poison(6, 8, 0),
 		new Poison(8, 9, 5)
 	],
 	portals: [],
@@ -47,8 +48,8 @@ let lab = [
 let vis = []
 
 // floor icons (3)
-let floor_tiles = Array(3).fill(0)
-let floor_indexes = []
+// let floor_tiles = Array(3).fill(0)
+// let floor_indexes = []
 
 // player
 let p
@@ -59,11 +60,26 @@ const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
 
 // ! OPTIMIZE that (later)
 function drawLabyrinth() {
+	stroke(0)
 
 	lab.forEach((rowEl, row) => {
 		rowEl.forEach((tile, col) => {
+
 			// draw tile image
-			image(floor_tiles[floor_indexes[row][col]], col * bw, row * bw, bw, bw)
+			//image(floor_tiles[floor_indexes[row][col]], col * bw, row * bw, bw, bw)
+
+			// push()
+			// fill(255)
+			// strokeWeight(1)
+			// stroke(0)
+			// rect(col * bw, row * bw, bw, bw)
+			// fill(0, 102, 153)
+			// noStroke()
+			// textSize(9)
+			// text(row + ' ' + col, col * bw + 15, row * bw + 30)
+			// pop()
+
+
 			// if tile have no walls
 			if (tile == '0') return
 			// calculate tile position
@@ -106,13 +122,13 @@ function update_score() {
 	textSize(16)
 	text('Score:', 10, 20)
 	textSize(tSize)
-	text(score, 60, 20)
-	if (previous_score != score) {
+	text(p.score, 60, 20)
+	if (previous_score != p.score) {
 		tSize = 20
 	}
 	if (tSize > 16) {
 		tSize -= tAnim
-		previous_score = score
+		previous_score = p.score
 	} else {
 		tSize = 16
 	}
@@ -132,23 +148,23 @@ function reset() {
 
 }
 
-function preload() {
-	//load floor tilec icons
-	floor_tiles = floor_tiles.map((e, i) => loadImage(`./icons/floor${i + 1}.png`))
-}
+// function preload() {
+//load floor tilec icons
+// floor_tiles = floor_tiles.map((e, i) => loadImage(`./icons/floor${i + 1}.png`))
+// }
 
 function setup() {
 	createCanvas(display_size, display_size)
 
 	// giving each tile on board random icon
-	let flen = floor_tiles.length - 1
-	lab.forEach(e => {
-		let t = []
-		e.forEach(() => t.push(rand(0, flen)))
-		floor_indexes.push(t)
-	})
+	// let flen = floor_tiles.length - 1
+	// lab.forEach(e => {
+	// 	let t = []
+	// 	e.forEach(() => t.push(rand(0, flen)))
+	// 	floor_indexes.push(t)
+	// })
 
-	// init visible sides
+	// init visible sides array
 	for (let i = 0, l = lab.length; i < l; i++) {
 		vis.push([])
 		for (let j = 0; j < l; j++)
@@ -159,7 +175,7 @@ function setup() {
 }
 
 function draw() {
-	background('#c3dfe3')
+	background('white')
 
 	// if not hardmode (bullshit)
 	if (!moode.checked) drawLabyrinth()
@@ -181,6 +197,10 @@ function draw() {
 		p.message('Youre treasure is not real! Go find real one!')
 	}
 
+	p.update()
+	p.always_draw()
+
+
 	Object.keys(items).forEach(o => {
 		if (items[o].length > 0)
 			items[o].forEach(e => {
@@ -188,8 +208,6 @@ function draw() {
 			})
 	})
 
-	p.update()
-	p.always_draw()
 
 	// treasures.forEach(e => {
 	// 	e.draw()

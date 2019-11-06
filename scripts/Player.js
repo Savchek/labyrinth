@@ -8,33 +8,40 @@ class Player extends Entity {
 		this.score = 0
 		this.score_multiplier = 1
 		this.treasure = undefined
+		this.bump = false
 	}
 
 	add_score() {
 		this.score += this.score_multiplier
+		console.log(this.score)
 	}
 
 	move(side, axis) {
 
-		// !CHECK THIS SHIT!
-		const got_side = this.lab_link[this.ny][this.nx].includes(side)
-
-		//make side visible
-
-		// if wall exist and its not in vis array
-		if (got_side && !vis[this.ny][this.nx].includes(side)) {
-			// add side to vis array
-			vis[this.ny][this.nx] += side
-			this.add_score()
-
-			// thats a moving condition?
+		if (this.bump) {
+			return 0
 		} else {
+			// defining what way player goes
+			let direction = axis == 'x' ? 'nx' : 'ny'
+			let step = (side == 'w' || side == 'n') ? -1 : 1
 
-			let d = axis == 'x' ? 'nx' : 'ny'
-			let s = (side == 'w' || side == 'n') ? -1 : 1
+			let alt_side = side == 'w' ? 'e' : side == 'e' ? 'w' : side == 'n' ? 's' : 'n'
 
-			this[d] = this[d] + s
-			this.add_score()
+			// predict move
+			this[direction] = this[direction] + step
+
+			if (lab[this.ny][this.nx].includes(alt_side)) {
+
+				if (!vis[this.ny][this.nx].includes(alt_side)) {
+					vis[this.ny][this.nx] += alt_side
+				}
+
+				// denying move
+				this[direction] = round(this[axis])
+				this.message('Bump!')
+			} else {
+				this.add_score()
+			}
 		}
 	}
 
