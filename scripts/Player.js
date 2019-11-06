@@ -13,36 +13,32 @@ class Player extends Entity {
 
 	add_score() {
 		this.score += this.score_multiplier
-		console.log(this.score)
 	}
 
 	move(side, axis) {
 
-		if (this.bump) {
-			return 0
-		} else {
-			// defining what way player goes
-			let direction = axis == 'x' ? 'nx' : 'ny'
-			let step = (side == 'w' || side == 'n') ? -1 : 1
+		// defining what way player goes
+		let direction = axis == 'x' ? 'nx' : 'ny'
+		let step = (side == 'w' || side == 'n') ? -1 : 1
 
-			let alt_side = side == 'w' ? 'e' : side == 'e' ? 'w' : side == 'n' ? 's' : 'n'
+		let alt_side = side == 'w' ? 'e' : side == 'e' ? 'w' : side == 'n' ? 's' : 'n'
 
-			// predict move
-			this[direction] = this[direction] + step
+		// predict move
+		this[direction] = this[direction] + step
 
-			if (lab[this.ny][this.nx].includes(alt_side)) {
+		if (lab[this.ny][this.nx].includes(alt_side)) {
 
-				if (!vis[this.ny][this.nx].includes(alt_side)) {
-					vis[this.ny][this.nx] += alt_side
-				}
-
-				// denying move
-				this[direction] = round(this[axis])
-				this.message('Bump!')
-			} else {
-				this.add_score()
+			if (!vis[this.ny][this.nx].includes(alt_side)) {
+				vis[this.ny][this.nx] += alt_side
 			}
+
+			// denying move
+			this[direction] = round(this[axis])
+			this.message('Bump!')
+		} else {
+			this.add_score()
 		}
+
 	}
 
 	update() {

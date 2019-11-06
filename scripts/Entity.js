@@ -3,12 +3,16 @@ class Entity {
 		this.x = x
 		this.y = y
 		this.icon = loadImage(`./icons/${icon ? icon : 'noicon'}.png`)
+		this.fading = false
+		this.fade_increment = -5
+		this.fade_value = 255
+		this.deleted = false
 	}
 	interact(object) {
 		return this.x == object.x && this.y == object.y
 	}
 	nearby(object, distance) {
-		return abs(this.x - ceil(object.x)) <= distance && abs(this.y - ceil(object.y)) <= distance
+		return abs(this.x - object.nx) <= distance && abs(this.y - object.ny) <= distance
 	}
 
 	can_see(object) {
@@ -77,5 +81,29 @@ class Entity {
 	}
 	always_draw() {
 		image(this.icon, this.x * bw, this.y * bw, bw, bw)
+	}
+	fade_out() {
+		if (this.fade_value <= 0) {
+			this.deleted = true
+		}
+
+		push()
+		tint(255, this.fade_value);
+		this.fade_value += this.fade_increment
+		this.always_draw()
+		pop()
+	}
+	update(player) {
+		if (!player || this.deleted) {
+			return 0
+		}
+
+		if (this.fading) this.fade_out()
+
+
+		if (this.nearby(player, 0) && !this.fading) {
+			this.fading = true
+			this.trigger_effect(player)
+		}
 	}
 }

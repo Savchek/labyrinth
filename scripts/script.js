@@ -24,7 +24,9 @@ let init_items = {
 		new Poison(8, 9, 5)
 	],
 	portals: [],
-	traps: []
+	traps: [
+		new Trap(8, 7, 15)
+	]
 }
 
 // labyrinth [hardcoded]
