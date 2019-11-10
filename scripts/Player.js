@@ -1,14 +1,20 @@
 class Player extends Entity {
 	constructor(x, y, animation_speed, labyrinth_link) {
 		super(x, y, 'player')
-		this.as = animation_speed
 		this.lab_link = labyrinth_link
 		this.nx = x
 		this.ny = y
+		this.as = animation_speed
+
+		this.treasure = undefined
+
+		// score stuff
 		this.score = 0
 		this.score_multiplier = 1
-		this.treasure = undefined
-		this.bump = false
+		this.previous_score = 0
+		this.text_size = 16
+		this.text_anim = 0.1
+		this.text_color = '#171717'
 	}
 
 	add_score() {
@@ -34,11 +40,31 @@ class Player extends Entity {
 
 			// denying move
 			this[direction] = round(this[axis])
-			this.message('Bump!')
 		} else {
 			this.add_score()
 		}
 
+	}
+
+	draw_score() {
+		push()
+		fill(20)
+		stroke(255)
+		textSize(16)
+		text('Score:', 10, 20)
+		textSize(this.text_size)
+		fill(this.text_color)
+		text(this.score, 60, 20)
+		if (this.previous_score != this.score) {
+			this.text_size = 20
+		}
+		if (this.text_size > 16) {
+			this.text_size -= this.text_anim
+			this.previous_score = this.score
+		} else {
+			this.text_size = 16
+		}
+		pop()
 	}
 
 	update() {
@@ -49,5 +75,8 @@ class Player extends Entity {
 		// normalize position numbers ( becouse some gap always left)
 		if (abs(this.x - this.nx) < 0.01) this.x = round(this.x)
 		if (abs(this.y - this.ny) < 0.01) this.y = round(this.y)
+
+		this.draw_score()
+		this.update_message()
 	}
 }

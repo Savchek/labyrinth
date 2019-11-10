@@ -4,9 +4,18 @@ class Entity {
 		this.y = y
 		this.icon = loadImage(`./icons/${icon ? icon : 'noicon'}.png`)
 		this.fading = false
-		this.fade_increment = -5
+		this.fade_increment = -3
 		this.fade_value = 255
 		this.deleted = false
+
+		// message
+		this.m = null
+		this.m_color = '#171717'
+		this.m_timer = 0
+		this.m_x = 0
+		this.m_y = 0
+		this.m_next_y = 0
+		this.m_anim_speed = 0.05
 	}
 	interact(object) {
 		return this.x == object.x && this.y == object.y
@@ -76,8 +85,13 @@ class Entity {
 		return true
 	}
 
-	message(text) {
-		console.log(text)
+	message(t, c) {
+		this.m = t
+		this.m_color = c || '#171717'
+		this.m_timer = 120
+		this.m_x = this.x * bw + bw / 2
+		this.m_y = this.y * bw
+		this.m_next_y = this.y * bw - bw / 2
 	}
 	always_draw() {
 		image(this.icon, this.x * bw, this.y * bw, bw, bw)
@@ -93,7 +107,26 @@ class Entity {
 		this.always_draw()
 		pop()
 	}
+
+	update_message() {
+		if (this.m_timer > 0) {
+			// draw
+			push()
+			fill(this.m_color)
+			textAlign(CENTER, CENTER)
+			stroke(150)
+			textSize(20)
+			text(this.m, this.m_x, this.m_y)
+			pop()
+			// update values
+			this.m_y += this.m_anim_speed * (this.m_next_y - this.m_y)
+			this.m_timer--
+		}
+	}
+
 	update(player) {
+		this.update_message()
+
 		if (!player || this.deleted) {
 			return 0
 		}

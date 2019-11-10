@@ -2,16 +2,22 @@
 new p5()
 
 // VARIABLES
-const moode = document.getElementById('hardmode')
+
+let canvas
+let game = document.getElementById('game')
+let menu = document.getElementById('menu')
+
+start_game = () => {
+	canvas.classList.toggle('hidden')
+	game.classList.toggle('hidden')
+	menu.classList.toggle('hidden')
+}
+
+menu.querySelector('#start_game').addEventListener('click', start_game)
 
 const display_size = 600
 // block width
 let bw = 50
-
-// game shit
-let score = 0, previous_score = 0,
-	tSize = 16,
-	tAnim = 0.1
 
 let items
 
@@ -20,7 +26,7 @@ let init_items = {
 	],
 	poisons: [
 		new Poison(9, 8, 2),
-		new Poison(6, 8, 0),
+		new Poison(5, 8, 0),
 		new Poison(8, 9, 5)
 	],
 	portals: [],
@@ -62,10 +68,13 @@ const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
 
 // ! OPTIMIZE that (later)
 function drawLabyrinth() {
-	stroke(0)
-
 	lab.forEach((rowEl, row) => {
 		rowEl.forEach((tile, col) => {
+
+			noStroke()
+			rect(col * bw, row * bw, bw, bw)
+			stroke(200)
+
 
 			// draw tile image
 			//image(floor_tiles[floor_indexes[row][col]], col * bw, row * bw, bw, bw)
@@ -113,33 +122,7 @@ function drawLabyrinth() {
 	})
 }
 
-function update_score() {
-
-	// make html element
-
-	// if(score != prev_score)
-	push()
-	fill(20)
-	noStroke()
-	textSize(16)
-	text('Score:', 10, 20)
-	textSize(tSize)
-	text(p.score, 60, 20)
-	if (previous_score != p.score) {
-		tSize = 20
-	}
-	if (tSize > 16) {
-		tSize -= tAnim
-		previous_score = p.score
-	} else {
-		tSize = 16
-	}
-	pop()
-}
-
 function reset() {
-	score = 0
-	previous_score = 0
 
 	items = Object.assign({}, init_items)
 
@@ -150,13 +133,11 @@ function reset() {
 
 }
 
-// function preload() {
-//load floor tilec icons
-// floor_tiles = floor_tiles.map((e, i) => loadImage(`./icons/floor${i + 1}.png`))
-// }
-
 function setup() {
 	createCanvas(display_size, display_size)
+
+	canvas = document.querySelector('canvas')
+	canvas.classList.toggle('hidden')
 
 	// giving each tile on board random icon
 	// let flen = floor_tiles.length - 1
@@ -177,12 +158,10 @@ function setup() {
 }
 
 function draw() {
-	background('white')
+	background('darkgrey')
 
-	// if not hardmode (bullshit)
-	if (!moode.checked) drawLabyrinth()
 
-	update_score()
+	drawLabyrinth()
 
 	// if player is out of labyrinth
 	let out = p.x < 1 || p.x > 10 || p.y < 1 || p.y > 10

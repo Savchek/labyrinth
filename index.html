@@ -13,17 +13,24 @@
 </head>
 
 <body>
-	<label><input id="hardmode" type="checkbox">Hard mode</label>
-	<div class="btns">
-		<div class="toprow">
-			<div class="btn" onclick="useBtn('n', 'y')">⬆️</div>
-		</div>
-		<div class="botrow">
-			<div class="btn" onclick="useBtn('w', 'x')">⬅️</div>
-			<div class="btn" onclick="useBtn('s', 'y')">⬇️</div>
-			<div class="btn" onclick="useBtn('e', 'x')">➡️</div>
+	<!-- <label><input id="hardmode" type="checkbox">Hard mode</label> -->
+
+	<div class="hidden" id="game">
+		<div class="btns">
+			<div class="toprow">
+				<div class="btn" onclick="useBtn('n', 'y')">⬆️</div>
+			</div>
+			<div class="botrow">
+				<div class="btn" onclick="useBtn('w', 'x')">⬅️</div>
+				<div class="btn" onclick="useBtn('s', 'y')">⬇️</div>
+				<div class="btn" onclick="useBtn('e', 'x')">➡️</div>
+			</div>
 		</div>
 	</div>
+	<div id="menu">
+		<div id="start_game">Start</div>
+	</div>
+	<!-- <script src="./scripts/Map.js"></script> -->
 	<script src="./scripts/Entity.js"></script>
 	<script src="./scripts/Player.js"></script>
 	<script src="./scripts/Poison.js"></script>

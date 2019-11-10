@@ -3,6 +3,7 @@ class Poison extends Entity {
 		super(x, y, multiplier == 0 ? 'cure' : 'poison')
 		// multiplier 0 means antidote
 		this.m = multiplier
+		this.text_color = multiplier == 0 ? '#171717' : '#22732d'
 	}
 
 	trigger_effect(player) {
@@ -13,7 +14,9 @@ class Poison extends Entity {
 
 		// if player.score_multiplier exists
 		player.score_multiplier = this.m > 0 ? player.score_multiplier + this.m : 1
+
+		player.text_color = this.text_color
 		// showing message
-		this.message(message)
+		this.message(message, this.text_color)
 	}
 }

@@ -36,6 +36,16 @@ label {
 	margin-top: 10px;
 }
 
+.hidden {
+	display: none!important;
+}
+
+#start_game {
+	width: 100px;
+	height: 100px;
+	cursor: pointer;
+}
+
 @media (max-width: 600px) {
 	.p5Canvas {
 		width: 100% !important;
