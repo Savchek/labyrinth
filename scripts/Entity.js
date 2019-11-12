@@ -85,13 +85,26 @@ class Entity {
 		return true
 	}
 
-	message(t, c) {
-		this.m = t
+	message(text, c, x, y) {
+		this.m = text
 		this.m_color = c || '#171717'
 		this.m_timer = 120
-		this.m_x = this.x * bw + bw / 2
-		this.m_y = this.y * bw
-		this.m_next_y = this.y * bw - bw / 2
+		this.m_x = x ? x : this.x * bw + bw / 2
+		this.m_y = y ? y : this.y * bw - bw / 10
+		this.m_next_y = y ? y - bw / 2 : this.y * bw - bw / 2
+
+		let half_text_len = text.length / 2 * 8
+
+		if (this.m_x < half_text_len) {
+			this.m_x += half_text_len
+		} else if (this.m_x > display_size - half_text_len) {
+			this.m_x -= half_text_len
+		}
+
+		if (this.m_y <= bw) {
+			this.m_y += bw + bw / 2
+			this.m_next_y += bw + bw / 2
+		}
 	}
 	always_draw() {
 		image(this.icon, this.x * bw, this.y * bw, bw, bw)
@@ -112,8 +125,8 @@ class Entity {
 		if (this.m_timer > 0) {
 			// draw
 			push()
-			fill(this.m_color)
 			textAlign(CENTER, CENTER)
+			fill(this.m_color)
 			stroke(150)
 			textSize(20)
 			text(this.m, this.m_x, this.m_y)

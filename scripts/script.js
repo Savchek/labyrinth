@@ -6,14 +6,18 @@ new p5()
 let canvas
 let game = document.getElementById('game')
 let menu = document.getElementById('menu')
+let screen = 'menu'
+let prev_screen = 'menu'
 
-start_game = () => {
-	canvas.classList.toggle('hidden')
-	game.classList.toggle('hidden')
-	menu.classList.toggle('hidden')
+const change_screen = s => {
+	screen = s
+	// canvas creating after
+	if ((canvas && s == 'game') || (canvas && prev_screen == 'game')) canvas.classList.toggle('hidden')
+	if (s == 'game' || prev_screen == 'game') game.classList.toggle('hidden')
+	if (s == 'menu' || prev_screen == 'menu') menu.classList.toggle('hidden')
 }
 
-menu.querySelector('#start_game').addEventListener('click', start_game)
+menu.querySelector('#start_game').addEventListener('click', () => change_screen('game'))
 
 const display_size = 600
 // block width
@@ -25,13 +29,16 @@ let init_items = {
 	treasures: [
 	],
 	poisons: [
-		new Poison(9, 8, 2),
+		new Poison(2, 2, 2),
 		new Poison(5, 8, 0),
 		new Poison(8, 9, 5)
 	],
 	portals: [],
 	traps: [
-		new Trap(8, 7, 15)
+		new Trap(8, 7, 15),
+		new Trap(9, 5, 15),
+		new Trap(9, 6, 15),
+		new Trap(1, 1, 15)
 	]
 }
 
@@ -54,10 +61,7 @@ let lab = [
 //! optimize!
 // visible sides of labyrinth
 let vis = []
-
-// floor icons (3)
-// let floor_tiles = Array(3).fill(0)
-// let floor_indexes = []
+let visited = []
 
 // player
 let p
@@ -72,6 +76,7 @@ function drawLabyrinth() {
 		rowEl.forEach((tile, col) => {
 
 			noStroke()
+			fill(visited[row][col] ? 30 : 20)
 			rect(col * bw, row * bw, bw, bw)
 			stroke(200)
 
@@ -98,10 +103,11 @@ function drawLabyrinth() {
 				y = row * bw
 
 			//							tile contains wall AND this wall is visible
-			const check_side = (side, i) => (tile[i] == side && vis[row][col].includes(side))
+			const check_side = (side, i) => {
+				return tile[i] == side && vis[row][col].includes(side)
+			}
 
 			for (let i = 0, l = tile.length; i < l; i++) {
-
 				if (check_side('n', i)) {
 					line(x, y, x + bw, y)
 
@@ -126,10 +132,14 @@ function reset() {
 
 	items = Object.assign({}, init_items)
 
-	// reset visible sides
 	vis = vis.map(e => e.map(i => i = ''))
 
+	visited = vis.map(e => e.map(i => i = ''))
+
 	p = new Player(8, 8, 0.2, lab)
+
+	// making visited tile player on
+	visited[p.x][p.y] = 1
 
 }
 
@@ -150,8 +160,9 @@ function setup() {
 	// init visible sides array
 	for (let i = 0, l = lab.length; i < l; i++) {
 		vis.push([])
-		for (let j = 0; j < l; j++)
+		for (let j = 0; j < l; j++) {
 			vis[i][j] = ''
+		}
 	}
 
 	reset()
@@ -167,7 +178,6 @@ function draw() {
 	let out = p.x < 1 || p.x > 10 || p.y < 1 || p.y > 10
 
 	stroke(255)
-	fill(20)
 	textSize(32)
 
 	if (out && !p.treasure) {
@@ -178,10 +188,11 @@ function draw() {
 		p.message('Youre treasure is not real! Go find real one!')
 	}
 
-	p.update()
 	p.always_draw()
+	p.update()
 
 
+	// updating items
 	Object.keys(items).forEach(o => {
 		if (items[o].length > 0)
 			items[o].forEach(e => {
@@ -201,22 +212,24 @@ function draw() {
 const useBtn = (a, b) => p.move(a, b)
 
 function keyPressed() {
-	switch (keyCode) {
-		case LEFT_ARROW:
-			p.move('w', 'x')
-			break
+	if (screen == 'game') {
+		switch (keyCode) {
+			case LEFT_ARROW:
+				p.move('w', 'x')
+				break
 
-		case RIGHT_ARROW:
-			p.move('e', 'x')
-			break
+			case RIGHT_ARROW:
+				p.move('e', 'x')
+				break
 
-		case UP_ARROW:
-			p.move('n', 'y')
-			break
+			case UP_ARROW:
+				p.move('n', 'y')
+				break
 
-		case DOWN_ARROW:
-			p.move('s', 'y')
-			break
+			case DOWN_ARROW:
+				p.move('s', 'y')
+				break
+		}
 	}
 }
 

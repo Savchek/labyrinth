@@ -19,15 +19,19 @@ class Player extends Entity {
 
 	add_score() {
 		this.score += this.score_multiplier
+		let score_str = this.score + ''
+		this.message('+' + this.score_multiplier, this.text_color, bw + bw / 2 + score_str.length * 10, -bw + 15)
 	}
 
 	move(side, axis) {
-
 		// defining what way player goes
 		let direction = axis == 'x' ? 'nx' : 'ny'
 		let step = (side == 'w' || side == 'n') ? -1 : 1
 
 		let alt_side = side == 'w' ? 'e' : side == 'e' ? 'w' : side == 'n' ? 's' : 'n'
+
+		// if player trying to move out of labyrinth
+		if (this[direction] + step > lab.length - 1 || this[direction] + step < 0) return 0
 
 		// predict move
 		this[direction] = this[direction] + step
@@ -41,6 +45,7 @@ class Player extends Entity {
 			// denying move
 			this[direction] = round(this[axis])
 		} else {
+			visited[this.ny][this.nx] = 1
 			this.add_score()
 		}
 

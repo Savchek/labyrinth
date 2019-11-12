@@ -11,7 +11,7 @@ class Trap extends Entity {
 		let prev_p_text_col = player.text_color
 		player.text_color = this.text_color
 		setTimeout(() => player.text_color = prev_p_text_col, 500)
-		this.message('Great! You stepped in trap!', this.text_color)
+		this.message('You stepped on a trap. +' + this.points, this.text_color)
 	}
 
 }
