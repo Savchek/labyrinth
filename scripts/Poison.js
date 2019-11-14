@@ -9,8 +9,8 @@ class Poison extends Entity {
 	trigger_effect(player) {
 		// if "m" is 0 - that's antidote
 
-		let message = 'You\'ve been '
-		message += this.m > 0 ? ('poisoned.' + (player.score_multiplier > 1 ? ' Again...' : '')) : 'cured.'
+		let message = 'Ты '
+		message += this.m > 0 ? ('отравился.' + (player.score_multiplier > 1 ? ' Опять...' : '')) : 'излечился.'
 
 		// if player.score_multiplier exists
 		player.score_multiplier = this.m > 0 ? player.score_multiplier + this.m : 1

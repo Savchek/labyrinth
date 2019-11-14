@@ -54,7 +54,7 @@ class Player extends Entity {
 		push()
 		stroke(255)
 		textSize(16)
-		text('Score:', 10, 20)
+		text('Очки:', 10, 20)
 		textSize(this.text_size)
 		fill(this.text_color)
 		text(this.score, 60, 20)

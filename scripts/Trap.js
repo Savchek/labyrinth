@@ -6,12 +6,13 @@ class Trap extends Entity {
 	}
 
 	trigger_effect(player) {
+		let phrases = ['Попался в ловушку', 'Ловушка!', 'Ай! Больно в ноге!']
 		player.score += this.points
 		// previous player text color
 		let prev_p_text_col = player.text_color
 		player.text_color = this.text_color
 		setTimeout(() => player.text_color = prev_p_text_col, 500)
-		this.message('You stepped on a trap. +' + this.points, this.text_color)
+		this.message(phrases[rand(0, 2)] + ' +' + this.points, this.text_color)
 	}
 
 }

@@ -41,7 +41,8 @@ label {
 	display: none!important;
 }
 
-#menu, #end_screen {
+#menu, #end_screen, #rules {
+	max-width: 600px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -61,7 +62,7 @@ label {
 }
 
 
-#game, #end_screen {
+#game, #end_screen, #rules {
 	display: none;
 }
 

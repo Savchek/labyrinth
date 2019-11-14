@@ -7,13 +7,14 @@ class Teleport extends Entity {
 	}
 
 	trigger_effect(player) {
+		let phrases = ['Телепорт?', 'Где я?', 'Ненавижу порталы!']
 		setTimeout(() => {
 			player.x = this.tx
 			player.y = this.ty
 			player.nx = this.tx
 			player.ny = this.ty
-			visited[this.tx][this.ty] = 1
-			player.message('Teleported', this.text_color)
+			visited[this.ty][this.tx] = 1
+			player.message(phrases[rand(0, 2)], this.text_color)
 		}, 300)
 	}
 

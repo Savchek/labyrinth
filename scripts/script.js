@@ -7,16 +7,18 @@ let canvas
 let game = document.getElementById('game')
 let menu = document.getElementById('menu')
 let end_screen = document.getElementById('end_screen')
+let rules = document.getElementById('rules')
 let screen = 'menu'
 
 const change_screen = s => {
 	screen = s
-	if (s == 'end_screen') end_screen.querySelector('.score').innerText = 'Youre score is ' + p.score
+	if (s == 'end_screen') end_screen.querySelector('.score').innerText = 'Ты набрал ' + p.score + ' очков'
 	if (s == 'game') reset()
 	game.style.display = s == 'game' ? 'block' : 'none'
 	canvas.style.display = s == 'game' ? 'block' : 'none'
 	menu.style.display = s == 'menu' ? 'flex' : 'none'
 	end_screen.style.display = s == 'end_screen' ? 'flex' : 'none'
+	rules.style.display = s == 'rules' ? 'flex' : 'none'
 }
 
 document.querySelectorAll('.mbtn').forEach(e => e.addEventListener('click', () => change_screen(e.dataset.screen)))
@@ -51,8 +53,6 @@ let visited = []
 // player
 let p
 
-// IMPORTANT FUNCTIONS
-
 function rand(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min
 }
@@ -66,22 +66,6 @@ function drawLabyrinth() {
 			fill(visited[row][col] ? 30 : 20)
 			rect(col * bw, row * bw, bw, bw)
 			stroke(200)
-
-
-			// draw tile image
-			//image(floor_tiles[floor_indexes[row][col]], col * bw, row * bw, bw, bw)
-
-			// push()
-			// fill(255)
-			// strokeWeight(1)
-			// stroke(0)
-			// rect(col * bw, row * bw, bw, bw)
-			// fill(0, 102, 153)
-			// noStroke()
-			// textSize(9)
-			// text(row + ' ' + col, col * bw + 15, row * bw + 30)
-			// pop()
-
 
 			// if tile have no walls
 			if (tile == '0') return
@@ -159,14 +143,6 @@ function setup() {
 	canvas = document.querySelector('canvas')
 	canvas.style.display = 'none'
 
-	// giving each tile on board random icon
-	// let flen = floor_tiles.length - 1
-	// lab.forEach(e => {
-	// 	let t = []
-	// 	e.forEach(() => t.push(rand(0, flen)))
-	// 	floor_indexes.push(t)
-	// })
-
 	// init visible sides array
 	for (let i = 0, l = lab.length; i < l; i++) {
 		vis.push([])
@@ -181,7 +157,6 @@ function setup() {
 function draw() {
 	background('darkgrey')
 
-
 	drawLabyrinth()
 
 	// if player is out of labyrinth
@@ -192,18 +167,15 @@ function draw() {
 
 	if (screen == 'game' && out) {
 		if (!p.treasure) {
-			p.message('You need to finnd treasure before leaving!')
+			p.message('Чтобы выйти нужно найти сокровище!')
 		} else if (p.treasure == 'real') {
 			p.message('YEY!')
 			setTimeout(() => change_screen('end_screen'), 1000)
-		} else if (p.treasure == 'fake') {
-			p.message('Youre treasure is not real! Go find real one!')
 		}
 	}
 
 	p.always_draw()
 	p.update()
-
 
 	// updating items
 	Object.keys(items).forEach(o => {
@@ -212,14 +184,6 @@ function draw() {
 				e.update(p)
 			})
 	})
-
-
-	// treasures.forEach(e => {
-	// 	e.draw()
-	// 	e.update()
-	// })
-
-
 }
 
 const useBtn = (a, b) => p.move(a, b)

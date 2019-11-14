@@ -5,10 +5,11 @@ class Treasure extends Entity {
 	}
 
 	trigger_effect(player) {
+		let phrases = ['Сокровище найдено', 'Опа чирик', 'В это я себе возьму']
 		player.treasure = 'real'
 		player.as = 0.1
 		player.set_icon('playercarrying')
-		this.message('You found a treasure', this.text_color)
+		this.message(phrases[rand(0, 2)], this.text_color)
 	}
 
 }

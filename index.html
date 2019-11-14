@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Document</title>
+	<title>Лабиринт</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
 	<script src="https://unpkg.com/p5.gif/dist/p5gif.min.js"></script>
@@ -28,14 +28,40 @@
 		</div>
 	</div>
 	<div id="menu">
-		<div class="mbtn" data-screen="game">Start</div>
+		<div class="mbtn" data-screen="game">Начать</div>
+		<div class="mbtn" data-screen="rules">Правила</div>
 	</div>
 	<div id="end_screen">
 		<p class="grats">
-			<p class="big">Congratulations!</p> You got out of the maze!
+			<p class="big">Поздраввляю!</p> Ты выбрался из лабиринта!
 		</p>
 		<p class="score">999</p>
-		<div class="mbtn" data-screen="menu">Menu</div>
+		<div class="mbtn" data-screen="menu">Меню</div>
+	</div>
+	<div id="rules">
+		<div class="text">
+			<h1>Правила</h1>
+			<p>Ты начинаешь игру в лабиритне. Стены становятся видимыми только когда ты натыкаешься на них. Цель игры:
+				найти сокровище и покинуть с ним лабиринт, набрав при этом минимальное количество очков.</p>
+			<p>Также в игре присутствуют побочные предметы:</p>
+			<ul>
+				<li>
+					<p><span style="color: #ad1010;">Ловушка</span> - прибавляет очков</p>
+				</li>
+				<li>
+					<p><span style="color: #008000;">Яд</span> - отравляет тебя, в следствии чего ходы тратят больше
+						очков</p>
+				</li>
+				<li>
+					<p><span style="color: #413e3e;">Исцеление от яда</span> - снимается эффект яда (логично)</p>
+				</li>
+				<li>
+					<p><span style="color: #1c0f68;">Телепорт</span> - перемещает тебя в другое место</p>
+				</li>
+			</ul>
+		</div>
+		<div class="mbtn" data-screen="menu">Меню</div>
+		<div class="mbtn" data-screen="game">Начать</div>
 	</div>
 	<script src="./scripts/Entity.js"></script>
 	<script src="./scripts/Player.js"></script>
