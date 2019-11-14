@@ -1,7 +1,6 @@
 class Player extends Entity {
-	constructor(x, y, animation_speed, labyrinth_link) {
+	constructor(x, y, animation_speed) {
 		super(x, y, 'player')
-		this.lab_link = labyrinth_link
 		this.nx = x
 		this.ny = y
 		this.as = animation_speed

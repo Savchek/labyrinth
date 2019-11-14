@@ -121,19 +121,24 @@ function drawLabyrinth() {
 function reset() {
 	items = {
 		treasures: [
-			new Treasure(7, 8)
+			new Treasure(9, 4)
 		],
 		poisons: [
-			new Poison(2, 2, 2),
-			new Poison(5, 8, 0),
-			new Poison(8, 9, 5)
+			new Poison(9, 3, 3),
+			new Poison(10, 4, 2),
+			new Poison(6, 5, 0),
+			new Poison(8, 1, 0)
 		],
-		portals: [],
+		teleports: [
+			new Teleport(9, 1, 10, 8),
+			new Teleport(10, 1, 10, 9),
+			new Teleport(1, 3, 10, 10),
+			new Teleport(1, 10, 9, 10),
+		],
 		traps: [
-			new Trap(8, 7, 15),
-			new Trap(9, 5, 15),
-			new Trap(9, 6, 15),
-			new Trap(1, 1, 15)
+			new Trap(9, 9, rand(10, 20)),
+			new Trap(6, 8, rand(10, 20)),
+			new Trap(6, 6, rand(10, 20))
 		]
 	}
 
@@ -141,7 +146,7 @@ function reset() {
 
 	visited = vis.map(e => e.map(i => i = ''))
 
-	p = new Player(8, 8, 0.2, lab)
+	p = new Player(8, 8, 0.2)
 
 	// making visited tile player on
 	visited[p.x][p.y] = 1
