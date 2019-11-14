@@ -53,7 +53,6 @@ class Player extends Entity {
 
 	draw_score() {
 		push()
-		fill(20)
 		stroke(255)
 		textSize(16)
 		text('Score:', 10, 20)

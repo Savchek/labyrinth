@@ -15,7 +15,7 @@
 <body>
 	<!-- <label><input id="hardmode" type="checkbox">Hard mode</label> -->
 
-	<div class="hidden" id="game">
+	<div id="game">
 		<div class="btns">
 			<div class="toprow">
 				<div class="btn" onclick="useBtn('n', 'y')">⬆️</div>
@@ -28,11 +28,18 @@
 		</div>
 	</div>
 	<div id="menu">
-		<div id="start_game">Start</div>
+		<div class="mbtn" data-screen="game">Start</div>
 	</div>
-	<!-- <script src="./scripts/Map.js"></script> -->
+	<div id="end_screen">
+		<p class="grats">
+			<p class="big">Congratulations!</p> You got out of the maze!
+		</p>
+		<p class="score">999</p>
+		<div class="mbtn" data-screen="menu">Menu</div>
+	</div>
 	<script src="./scripts/Entity.js"></script>
 	<script src="./scripts/Player.js"></script>
+	<script src="./scripts/Treasure.js"></script>
 	<script src="./scripts/Poison.js"></script>
 	<script src="./scripts/Trap.js"></script>
 	<script src="./scripts/script.js"></script>

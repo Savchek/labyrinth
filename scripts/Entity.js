@@ -17,6 +17,9 @@ class Entity {
 		this.m_next_y = 0
 		this.m_anim_speed = 0.05
 	}
+	set_icon(icon) {
+		this.icon = loadImage(`./icons/${icon ? icon : 'noicon'}.png`)
+	}
 	interact(object) {
 		return this.x == object.x && this.y == object.y
 	}

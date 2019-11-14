@@ -6,41 +6,26 @@ new p5()
 let canvas
 let game = document.getElementById('game')
 let menu = document.getElementById('menu')
+let end_screen = document.getElementById('end_screen')
 let screen = 'menu'
-let prev_screen = 'menu'
 
 const change_screen = s => {
 	screen = s
-	// canvas creating after
-	if ((canvas && s == 'game') || (canvas && prev_screen == 'game')) canvas.classList.toggle('hidden')
-	if (s == 'game' || prev_screen == 'game') game.classList.toggle('hidden')
-	if (s == 'menu' || prev_screen == 'menu') menu.classList.toggle('hidden')
+	if (s == 'end_screen') end_screen.querySelector('.score').innerText = 'Youre score is ' + p.score
+	if (s == 'game') reset()
+	game.style.display = s == 'game' ? 'block' : 'none'
+	canvas.style.display = s == 'game' ? 'block' : 'none'
+	menu.style.display = s == 'menu' ? 'flex' : 'none'
+	end_screen.style.display = s == 'end_screen' ? 'flex' : 'none'
 }
 
-menu.querySelector('#start_game').addEventListener('click', () => change_screen('game'))
+document.querySelectorAll('.mbtn').forEach(e => e.addEventListener('click', () => change_screen(e.dataset.screen)))
 
 const display_size = 600
 // block width
 let bw = 50
 
 let items
-
-let init_items = {
-	treasures: [
-	],
-	poisons: [
-		new Poison(2, 2, 2),
-		new Poison(5, 8, 0),
-		new Poison(8, 9, 5)
-	],
-	portals: [],
-	traps: [
-		new Trap(8, 7, 15),
-		new Trap(9, 5, 15),
-		new Trap(9, 6, 15),
-		new Trap(1, 1, 15)
-	]
-}
 
 // labyrinth [hardcoded]
 let lab = [
@@ -68,7 +53,9 @@ let p
 
 // IMPORTANT FUNCTIONS
 
-const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min
+function rand(min, max) {
+	return Math.floor(Math.random() * (max - min + 1)) + min
+}
 
 // ! OPTIMIZE that (later)
 function drawLabyrinth() {
@@ -107,21 +94,24 @@ function drawLabyrinth() {
 				return tile[i] == side && vis[row][col].includes(side)
 			}
 
+			strokeWeight(2)
+
 			for (let i = 0, l = tile.length; i < l; i++) {
 				if (check_side('n', i)) {
-					line(x, y, x + bw, y)
+					line(x - 1, y - 1, x + bw - 1, y - 1)
 
 				} else if (check_side('e', i)) {
-					line(x + bw, y, x + bw, y + bw)
+					line(x + bw - 1, y, x + bw - 1, y + bw)
 
 				} else if (check_side('s', i)) {
-					line(x, y + bw, x + bw, y + bw)
+					line(x - 1, y + bw - 1, x + bw - 1, y + bw - 1)
 
 				} else if (check_side('w', i)) {
-					line(x, y, x, y + bw)
+					line(x - 1, y, x - 1, y + bw)
 
 				}
 			}
+			strokeWeight(1)
 			//end of for
 
 		})
@@ -129,8 +119,23 @@ function drawLabyrinth() {
 }
 
 function reset() {
-
-	items = Object.assign({}, init_items)
+	items = {
+		treasures: [
+			new Treasure(7, 8)
+		],
+		poisons: [
+			new Poison(2, 2, 2),
+			new Poison(5, 8, 0),
+			new Poison(8, 9, 5)
+		],
+		portals: [],
+		traps: [
+			new Trap(8, 7, 15),
+			new Trap(9, 5, 15),
+			new Trap(9, 6, 15),
+			new Trap(1, 1, 15)
+		]
+	}
 
 	vis = vis.map(e => e.map(i => i = ''))
 
@@ -147,7 +152,7 @@ function setup() {
 	createCanvas(display_size, display_size)
 
 	canvas = document.querySelector('canvas')
-	canvas.classList.toggle('hidden')
+	canvas.style.display = 'none'
 
 	// giving each tile on board random icon
 	// let flen = floor_tiles.length - 1
@@ -180,12 +185,15 @@ function draw() {
 	stroke(255)
 	textSize(32)
 
-	if (out && !p.treasure) {
-		p.message('You need to finnd treasure before leaving!')
-	} else if (out && p.treasure.real) {
-		// show end screen
-	} else if (out && !p.treasure.real) {
-		p.message('Youre treasure is not real! Go find real one!')
+	if (screen == 'game' && out) {
+		if (!p.treasure) {
+			p.message('You need to finnd treasure before leaving!')
+		} else if (p.treasure == 'real') {
+			p.message('YEY!')
+			setTimeout(() => change_screen('end_screen'), 1000)
+		} else if (p.treasure == 'fake') {
+			p.message('Youre treasure is not real! Go find real one!')
+		}
 	}
 
 	p.always_draw()
