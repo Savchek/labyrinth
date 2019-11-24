@@ -92,8 +92,8 @@ class Entity {
 		this.m = text
 		this.m_color = c || '#171717'
 		this.m_timer = 120
-		this.m_x = x ? x : this.x * bw + bw / 2
-		this.m_y = y ? y : this.y * bw - bw / 10
+		this.m_x = x ? x * bw : this.x * bw + bw / 2
+		this.m_y = y ? y * bw : this.y * bw - bw / 10
 		this.m_next_y = y ? y - bw / 2 : this.y * bw - bw / 2
 
 		let half_text_len = text.length / 2 * 8

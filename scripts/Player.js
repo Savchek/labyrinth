@@ -5,7 +5,7 @@ class Player extends Entity {
 		this.ny = y
 		this.as = animation_speed
 
-		this.treasure = undefined
+		this.treasure
 
 		// score stuff
 		this.score = 0
@@ -22,32 +22,43 @@ class Player extends Entity {
 		this.message('+' + this.score_multiplier, this.text_color, bw + bw / 2 + score_str.length * 10, -bw + 15)
 	}
 
-	move(side, axis) {
-		// defining what way player goes
-		let direction = axis == 'x' ? 'nx' : 'ny'
-		let step = (side == 'w' || side == 'n') ? -1 : 1
+	move(side) {
+		let cur_cell = lab[this.nx][this.ny]
+		let next_cell
 
-		let alt_side = side == 'w' ? 'e' : side == 'e' ? 'w' : side == 'n' ? 's' : 'n'
+		let sides = ['top', 'right', 'bottom', 'left']
+		let side_index = sides.indexOf(side)
+		// get opposite side
+		let op_side_index = side_index < 2 ? side_index + 2 : side_index - 2
 
-		// if player trying to move out of labyrinth
-		if (this[direction] + step > lab.length - 1 || this[direction] + step < 0) return 0
+		let step = (side == 'right' || side == 'bottom') ? 1 : -1
+		let dir
 
-		// predict move
-		this[direction] = this[direction] + step
-
-		if (lab[this.ny][this.nx].includes(alt_side)) {
-
-			if (!vis[this.ny][this.nx].includes(alt_side)) {
-				vis[this.ny][this.nx] += alt_side
-			}
-
-			// denying move
-			this[direction] = round(this[axis])
+		if (side == 'left' || side == 'right') {
+			dir = 'nx'
 		} else {
-			visited[this.ny][this.nx] = 1
-			this.add_score()
+			dir = 'ny'
 		}
 
+		next_cell = lab[this.nx + (dir == 'nx' ? step : 0)][this.ny + (dir == 'ny' ? step : 0)]
+
+		// if wall exist
+		if (cur_cell.walls[side_index]) {
+
+			// if wall not visible
+			if (!cur_cell.visible[side_index]) {
+
+				// make wall visible
+				cur_cell.visible[side_index] = 1
+				next_cell.visible[op_side_index] = 1
+			}
+
+		} else {
+			// if wall not exist
+			this[dir] += step
+			lab[this.nx][this.ny].visited = true
+			this.add_score()
+		}
 	}
 
 	draw_score() {

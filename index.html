@@ -18,12 +18,12 @@
 	<div id="game">
 		<div class="btns">
 			<div class="toprow">
-				<div class="btn" onclick="useBtn('n', 'y')">⬆️</div>
+				<div class="btn" onclick="useBtn('top')">⬆️</div>
 			</div>
 			<div class="botrow">
-				<div class="btn" onclick="useBtn('w', 'x')">⬅️</div>
-				<div class="btn" onclick="useBtn('s', 'y')">⬇️</div>
-				<div class="btn" onclick="useBtn('e', 'x')">➡️</div>
+				<div class="btn" onclick="useBtn('left')">⬅️</div>
+				<div class="btn" onclick="useBtn('bottom')">⬇️</div>
+				<div class="btn" onclick="useBtn('right')">➡️</div>
 			</div>
 		</div>
 	</div>
@@ -64,12 +64,14 @@
 		<div class="mbtn" data-screen="game">Начать</div>
 	</div>
 	<script src="./scripts/Entity.js"></script>
+	<script src="./scripts/Cell.js"></script>
+	<script src="./scripts/Exit.js"></script>
 	<script src="./scripts/Player.js"></script>
 	<script src="./scripts/Treasure.js"></script>
 	<script src="./scripts/Teleport.js"></script>
 	<script src="./scripts/Poison.js"></script>
 	<script src="./scripts/Trap.js"></script>
-	<script src="./scripts/script.js"></script>
+	<script src="./scripts/main.js"></script>
 </body>
 
 </html>

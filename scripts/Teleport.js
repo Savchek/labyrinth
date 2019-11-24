@@ -13,7 +13,7 @@ class Teleport extends Entity {
 			player.y = this.ty
 			player.nx = this.tx
 			player.ny = this.ty
-			visited[this.ty][this.tx] = 1
+			lab[this.ty][this.tx].visited = true
 			player.message(phrases[rand(0, 2)], this.text_color)
 		}, 300)
 	}
