@@ -3,7 +3,7 @@ class Cell {
 		this.x = x
 		this.y = y
 		this.walls = new Array(4).fill(true)
-		this.visible = new Array(4).fill(1)
+		this.visible = new Array(4).fill(false)
 		this.visited = false
 		this.contain_item - false
 		// for random generator
