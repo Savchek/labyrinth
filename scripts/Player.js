@@ -40,7 +40,8 @@ class Player extends Entity {
 			dir = 'ny'
 		}
 
-		next_cell = lab[this.nx + (dir == 'nx' ? step : 0)][this.ny + (dir == 'ny' ? step : 0)]
+		next_cell = lab[this.nx + (dir == 'nx' ? step : 0)] ?
+			lab[this.nx + (dir == 'nx' ? step : 0)][this.ny + (dir == 'ny' ? step : 0)] : undefined
 
 		// if wall exist
 		if (cur_cell.walls[side_index]) {
@@ -50,7 +51,7 @@ class Player extends Entity {
 
 				// make wall visible
 				cur_cell.visible[side_index] = 1
-				next_cell.visible[op_side_index] = 1
+				if (next_cell) next_cell.visible[op_side_index] = 1
 			}
 
 		} else {

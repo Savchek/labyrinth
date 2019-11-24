@@ -96,7 +96,7 @@ class Entity {
 		this.m_y = y ? y * bw : this.y * bw - bw / 10
 		this.m_next_y = y ? y - bw / 2 : this.y * bw - bw / 2
 
-		let half_text_len = text.length / 2 * 8
+		let half_text_len = text.length / 2 * 9
 
 		if (this.m_x < half_text_len) {
 			this.m_x += half_text_len

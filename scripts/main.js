@@ -46,9 +46,13 @@ function rand(min, max) {
 function reset() {
 
 	p = new Player(8, 8, 0.2)
+	let r = rand(0, 2)
+	let horizontal = r == 0 ? 0 : r == 1 ? tiles_count - 1 : rand(0, tiles_count - 1)
+	r = rand(0, 2)
+	let vertical = r == 0 ? 0 : r == 1 ? tiles_count - 1 : rand(0, tiles_count - 1)
 
 	items = {
-		exit: [new Exit(rand(0, tiles_count - 1), rand(0, tiles_count - 1))],
+		exit: [new Exit(horizontal, vertical)],
 		treasures: [
 			new Treasure(8, 9)
 		],
